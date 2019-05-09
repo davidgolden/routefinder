@@ -1,0 +1,7 @@
+@import url("https://unpkg.com/leaflet@1.5.1/dist/leaflet.css");
+//@import '~react-leaflet-markercluster/dist/styles.min.css'; // sass
+@import url('~react-leaflet-markercluster/dist/styles.min.css'); // css
+
+.mapContainer {
+  height: 24rem;
+}
