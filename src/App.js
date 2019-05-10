@@ -11,7 +11,11 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            location: {
+            mapLocation: {
+                lat: "39.400720",
+                lng: "-107.215337",
+            },
+            queryLocation: {
                 lat: "39.400720",
                 lng: "-107.215337",
             },
@@ -75,9 +79,9 @@ export default class App extends React.Component {
     handleLatChange = e => {
         this.setState(prevState => {
             return {
-                location: {
+                queryLocation: {
                     lat: e.target.value,
-                    lng: prevState.location.lng,
+                    lng: prevState.queryLocation.lng,
                 }
             }
         })
@@ -86,8 +90,8 @@ export default class App extends React.Component {
     handleLngChange = e => {
         this.setState(prevState => {
             return {
-                location: {
-                    lat: prevState.location.lat,
+                queryLocation: {
+                    lat: prevState.queryLocation.lat,
                     lng: e.target.value,
                 }
             }
@@ -136,7 +140,7 @@ export default class App extends React.Component {
 
     handleMapClick = e => {
         this.setState({
-            location: {
+            queryLocation: {
                 lat: e.latlng.lat,
                 lng: e.latlng.lng,
             }
@@ -153,7 +157,8 @@ export default class App extends React.Component {
             <div>
                 {this.state.trailView && <TrailView trail={this.state.trailView} setTrailView={this.setTrailView} />}
 
-                <TrailsMap position={[this.state.location.lat, this.state.location.lng]}
+                <TrailsMap mapLocation={[this.state.mapLocation.lat, this.state.mapLocation.lng]}
+                           queryLocation={[this.state.queryLocation.lat, this.state.queryLocation.lng]}
                            handleClick={this.handleMapClick}
                            trails={this.state.trails}
                            setTrailView={this.setTrailView}
@@ -162,7 +167,7 @@ export default class App extends React.Component {
                     handleLatChange={this.handleLatChange}
                     handleLngChange={this.handleLngChange}
                     handleSubmit={this.handleSubmit}
-                    location={this.state.location}
+                    location={this.state.queryLocation}
                     maxDistance={this.state.maxDistance}
                     handleMaxDistanceChange={this.handleMaxDistanceChange}
                     sources={this.state.sources}

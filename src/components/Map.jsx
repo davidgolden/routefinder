@@ -48,7 +48,7 @@ const getIcon = {
 
 const TrailsMap = props => {
     return <Map
-        center={props.position}
+        center={props.mapLocation}
         zoom={13}
         maxZoom={18}
         className={'mapContainer'}
@@ -58,7 +58,7 @@ const TrailsMap = props => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker icon={pointerIcon} position={props.position} />
+        <Marker icon={pointerIcon} position={props.queryLocation} />
         <MarkerClusterGroup>
             {props.trails.map((item, index) => {
                 return <Marker key={index} icon={getIcon[item.source]} position={[item.latitude, item.longitude]} onClick={() => props.setTrailView(item)} />
