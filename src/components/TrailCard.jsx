@@ -4,23 +4,23 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown} from "@fortawesome/free-solid-svg-icons";
 import moment from 'moment';
 
-import TrailRunnerIcon from '../../assets/trailrunicon.svg';
-import MTBIcon from '../../assets/mtbicon.svg';
-import HikingIcon from '../../assets/hikingicon.svg';
-import Green from '../../assets/green.svg';
-import Yellow from '../../assets/yellow.svg';
-import Red from '../../assets/red.svg';
+// import TrailRunnerIcon from '../../assets/trailrunicon.svg';
+// import MTBIcon from '../../assets/mtbicon.svg';
+// import HikingIcon from '../../assets/hikingicon.svg';
+// import Green from '../../assets/green.svg';
+// import Yellow from '../../assets/yellow.svg';
+// import Red from '../../assets/red.svg';
 
 const getIcon = {
-    "trailrun": TrailRunnerIcon,
-    "mtb": MTBIcon,
-    "hiking": HikingIcon,
+    "trailrun": require('../assets/trailrunicon.svg'),
+    "mtb": require('../assets/mtbicon.svg'),
+    "hiking": require('../assets/hikingicon.svg'),
 };
 
 const getCondition = {
-    'All Clear': Green,
-    'Minor Issues': Yellow,
-    'Bad / Closed': Red,
+    'All Clear': require('../assets/green.svg'),
+    'Minor Issues': require('../assets/yellow.svg'),
+    'Bad / Closed': require('../assets/red.svg'),
 };
 
 const TrailCard = props => {

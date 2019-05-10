@@ -2,9 +2,6 @@ import React from 'react';
 import "./styles/TrailView.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown, faStar} from "@fortawesome/free-solid-svg-icons";
-import TrailRunnerIcon from "../../assets/trailrunicon.svg";
-import MTBIcon from "../../assets/mtbicon.svg";
-import HikingIcon from "../../assets/hikingicon.svg";
 import axios from 'axios';
 import ConditionReport from "./ConditionReport";
 
@@ -19,9 +16,9 @@ export default class TrailView extends React.Component {
         this.trailViewRef = React.createRef();
 
         this.getIcon = {
-            "trailrun": TrailRunnerIcon,
-            "mtb": MTBIcon,
-            "hiking": HikingIcon,
+            "trailrun": require('../assets/trailrunicon.svg'),
+            "mtb": require('../assets/mtbicon.svg'),
+            "hiking": require('../assets/hikingicon.svg'),
         };
     }
 
