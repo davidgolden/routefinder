@@ -8,13 +8,25 @@ import "./styles/ConditionReport.scss";
 // conditionImg: "https://cdn.apstatic.com/img/conditions/green.svg"
 // conditionStatus: "All Clear"
 
+import { ReactComponent as Green } from '../assets/green.svg';
+import { ReactComponent as Yellow } from '../assets/yellow.svg';
+import { ReactComponent as Red } from '../assets/red.svg';
+
+const getImage = {
+    "All Clear": <Green/>,
+    "Minor Issues": <Yellow/>,
+    "Bad / Closed": <Red />,
+};
+
 const ConditionReport = props => {
+    const ConditionIcon = () => getImage[props.conditionStatus];
+
     return (
         <div className={'conditionReport'}>
-            <img src={props.report.conditionImg} alt={'condition'} />
-            <span>{props.report.conditionStatus}</span> -
-            <span>{moment(props.report.conditionDate, 'YYYY-MM-DD HH:mm:ss').format('MMM D, YYYY')}</span> -
-            <span>{props.report.conditionDetails}</span>
+            <ConditionIcon />
+            <span>{props.conditionStatus}</span> -
+            <span>{moment(props.conditionDate, 'YYYY-MM-DD HH:mm:ss').format('MMM D, YYYY')}</span> -
+            <span>{props.conditionDetails}</span>
         </div>
     )
 };

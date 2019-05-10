@@ -183,8 +183,8 @@ export default class App extends React.Component {
                 </p>
                 <div className={'trailCardContainer'}>
                     {this.state.trails
-                        .map(trail => {
-                            return <TrailCard trail={trail} setTrailView={this.setTrailView}/>
+                        .map((trail, index) => {
+                            return <TrailCard key={index} trail={trail} setTrailView={this.setTrailView}/>
                         })}
                 </div>
             </div>

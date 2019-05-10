@@ -2,23 +2,22 @@ import React from 'react';
 import "./styles/TrailView.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown, faStar} from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
 import ConditionReport from "./ConditionReport";
+
+import {ReactComponent as TrailRunnerIcon} from '../assets/trailrunicon.svg';
+import {ReactComponent as MTBIcon} from '../assets/mtbicon.svg';
+import {ReactComponent as HikingIcon} from '../assets/hikingicon.svg';
 
 export default class TrailView extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            reports: [],
-        };
-
         this.trailViewRef = React.createRef();
 
         this.getIcon = {
-            "trailrun": require('../assets/trailrunicon.svg'),
-            "mtb": require('../assets/mtbicon.svg'),
-            "hiking": require('../assets/hikingicon.svg'),
+            "trailrun": <TrailRunnerIcon/>,
+            "mtb": <MTBIcon/>,
+            "hiking": <HikingIcon/>,
         };
     }
 
@@ -28,30 +27,9 @@ export default class TrailView extends React.Component {
         }
     };
 
-    componentDidMount() {
-        axios({
-            method: 'get',
-            url: `https://www.${this.props.trail.source}project.com/data/get-conditions`,
-            params: {
-                ids: this.props.trail.id,
-                key: "7024512-867f645d37de30f2bc0144d8dc5bc776",
-            }
-        })
-            .then(response => {
-                const reports = [];
-
-                for (let k in response.data) {
-                    if (k !== 'success') {
-                        reports.push(response.data[k]);
-                    }
-                }
-                this.setState({
-                    reports: reports,
-                })
-            })
-    }
-
     render() {
+        const SourceIcon = () => this.getIcon[this.props.trail.source];
+
         return (
             <div className={'background'} onClick={this.handleClick}>
                 <div className={'modal'}>
@@ -59,7 +37,7 @@ export default class TrailView extends React.Component {
                         {this.props.trail.imgMedium && <img src={this.props.trail.imgMedium} alt={"Trail"}/>}
                         <div>
                             <div>
-                                <img src={this.getIcon[this.props.trail.source]} alt={'source icon'}/>
+                                <SourceIcon/>
                                 <h2>{this.props.trail.name}</h2>
                             </div>
                             <h3>{this.props.trail.location}, {this.props.trail.length}mi</h3>
@@ -80,9 +58,11 @@ export default class TrailView extends React.Component {
                         </div>
                         <div>
                             <h4>Latest Trail Report</h4>
-                            {this.state.reports.map(report => {
-                                return <ConditionReport report={report}/>
-                            })}
+                            <ConditionReport
+                                conditionStatus={this.props.trail.conditionStatus}
+                                conditionDate={this.props.trail.conditionDate}
+                                conditionDetails={this.props.trail.conditionDetails}
+                            />
                         </div>
                     </div>
                 </div>
