@@ -2,9 +2,9 @@ import React from 'react';
 import "./styles/TrailView.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown, faStar} from "@fortawesome/free-solid-svg-icons";
-import TrailRunnerIcon from "../assets/trailrunicon.svg";
-import MTBIcon from "../assets/mtbicon.svg";
-import HikingIcon from "../assets/hikingicon.svg";
+import TrailRunnerIcon from "../../assets/trailrunicon.svg";
+import MTBIcon from "../../assets/mtbicon.svg";
+import HikingIcon from "../../assets/hikingicon.svg";
 import axios from 'axios';
 import ConditionReport from "./ConditionReport";
 

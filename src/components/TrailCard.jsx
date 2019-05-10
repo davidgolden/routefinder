@@ -4,12 +4,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown} from "@fortawesome/free-solid-svg-icons";
 import moment from 'moment';
 
-import TrailRunnerIcon from '../assets/trailrunicon.svg';
-import MTBIcon from '../assets/mtbicon.svg';
-import HikingIcon from '../assets/hikingicon.svg';
-import Green from '../assets/green.svg';
-import Yellow from '../assets/yellow.svg';
-import Red from '../assets/red.svg';
+import TrailRunnerIcon from '../../assets/trailrunicon.svg';
+import MTBIcon from '../../assets/mtbicon.svg';
+import HikingIcon from '../../assets/hikingicon.svg';
+import Green from '../../assets/green.svg';
+import Yellow from '../../assets/yellow.svg';
+import Red from '../../assets/red.svg';
 
 const getIcon = {
     "trailrun": TrailRunnerIcon,
