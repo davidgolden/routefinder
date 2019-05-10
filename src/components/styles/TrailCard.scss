@@ -5,13 +5,25 @@
   margin: 10px;
   width: 200px;
   padding: 10px;
+  cursor: pointer;
 
-  img {
+  > img {
     width: 100%;
   }
 
   > div {
     display: inline-block;
     margin: 10px;
+
+    h2 {
+      display: inline;
+    }
+
+    img {
+      width: 30px;
+      margin-right: 5px;
+      display: inline;
+      vertical-align: top;
+    }
   }
 }

@@ -4,6 +4,7 @@ import './App.scss';
 import TrailCard from "./components/TrailCard";
 import TrailsMap from "./components/Map";
 import SearchBar from "./components/SearchBar";
+import TrailView from "./components/TrailView";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -17,9 +18,16 @@ export default class App extends React.Component {
             maxDistance: 100,
             trails: [],
             sources: ['trailrun', 'mtb', 'hiking'],
-            searchConditions: ['All Clear']
+            searchConditions: ['All Clear'],
+            trailView: false,
         }
     }
+
+    setTrailView = trail => {
+        this.setState({
+            trailView: trail,
+        })
+    };
 
     handleSubmit = () => {
         Promise.all(
@@ -38,12 +46,28 @@ export default class App extends React.Component {
             })
         )
             .then(response => {
+                const sources = {
+                    trailrun: "trailrun",
+                    mtb: "mtb",
+                    hiking: "hiking",
+                };
+
                 let trails = [];
                 for (let i = 0; i < response.length; i++) {
                     trails = trails.concat(response[i].data.trails);
                 }
+
                 this.setState({
-                    trails: trails.filter(trail => this.state.searchConditions.includes(trail.conditionStatus)),
+                    trails: trails
+                        .filter(trail => this.state.searchConditions.includes(trail.conditionStatus))
+                        .map(trail => {
+                            for (let k in sources) {
+                                if (trail.url.includes(k)) {
+                                    trail.source = sources[k];
+                                }
+                            }
+                            return trail;
+                        })
                 })
             })
     };
@@ -127,9 +151,12 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
+                {this.state.trailView && <TrailView trail={this.state.trailView} setTrailView={this.setTrailView} />}
+
                 <TrailsMap position={[this.state.location.lat, this.state.location.lng]}
                            handleClick={this.handleMapClick}
                            trails={this.state.trails}
+                           setTrailView={this.setTrailView}
                 />
                 <SearchBar
                     handleLatChange={this.handleLatChange}
@@ -144,19 +171,22 @@ export default class App extends React.Component {
                     handleConditionsChange={this.handleConditionsChange}
                 />
 
-                <p>NOTE: This app uses entirely data from <a href="www.trailrunproject.com" target={"_blank"}>Trail Run Project</a>, <a
-                    href="www.mtbproject.com" target={"_blank"}>MTB Project</a>, and <a href={"www.hikingproject.com"} target={"_blank"}>Hiking Project</a>.
+                <p>NOTE: This app uses entirely data from <a href="www.trailrunproject.com" target={"_blank"}>Trail Run
+                    Project</a>, <a
+                    href="www.mtbproject.com" target={"_blank"}>MTB Project</a>, and <a href={"www.hikingproject.com"}
+                                                                                        target={"_blank"}>Hiking
+                    Project</a>.
                     Because these sites do not directly allow for querying data by trail condition, this app functions
                     by finding up to 500 trails which meet the search criteria and then filtering these trails by
                     condition. If more than 500 trails meet the search criteria, not all matching trails will be
                     returned!
                 </p>
-<div className={'trailCardContainer'}>
+                <div className={'trailCardContainer'}>
                     {this.state.trails
                         .map(trail => {
-                            return <TrailCard trail={trail}/>
+                            return <TrailCard trail={trail} setTrailView={this.setTrailView}/>
                         })}
-</div>
+                </div>
             </div>
         )
     }

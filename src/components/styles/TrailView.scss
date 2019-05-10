@@ -1,0 +1,51 @@
+.background {
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 2000;
+  position: fixed;
+}
+
+.modal {
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
+
+.trailView {
+  z-index: 2;
+  background-color: white;
+  padding: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  width: 600px;
+  max-width: 95%;
+  margin: 30px auto;
+
+  > img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  > div {
+    > div {
+      text-align: center;
+
+      img {
+        width: 30px;
+        margin-right: 5px;
+        display: inline;
+        vertical-align: top;
+      }
+
+      h2 {
+        display: inline;
+      }
+    }
+  }
+}
