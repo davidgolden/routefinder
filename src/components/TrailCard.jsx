@@ -10,6 +10,7 @@ import { ReactComponent as HikingIcon } from '../assets/hikingicon.svg';
 import { ReactComponent as Green } from '../assets/green.svg';
 import { ReactComponent as Yellow } from '../assets/yellow.svg';
 import { ReactComponent as Red } from '../assets/red.svg';
+import { ReactComponent as Unknown } from "../assets/empty.svg";
 
 const getIcon = {
     "trailrun": <TrailRunnerIcon/>,
@@ -21,6 +22,7 @@ const getCondition = {
     'All Clear': <Green />,
     'Minor Issues': <Yellow />,
     'Bad / Closed': <Red />,
+    'Unknown': <Unknown/>,
 };
 
 const TrailCard = props => {

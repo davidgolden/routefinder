@@ -1,0 +1,78 @@
+$color: #bad6be;
+
+.searchBarContainer {
+  font-size: 1.2rem;
+  background-color: $color;
+  text-align: center;
+  padding-bottom: 10px;
+
+  small {
+    margin: 0 10%;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  input, label {
+    margin: 0 10px;
+  }
+
+  input {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    background-color: lighten($color, 10%);
+    border: none;
+  }
+
+  > div {
+    padding: 10px 0;
+  }
+
+  button {
+    background-color: darken($color, 30%);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($color, 50%)
+    }
+  }
+}
+
+.locationContainer {
+  display: block;
+  div {
+    display: inline-block;
+  }
+}
+
+.sourceContainer {
+  input, label {
+    height: 50px;
+    cursor: pointer;
+  }
+
+  svg {
+    height: 50px;
+    width: auto;
+  }
+}
+
+.conditionContainer {
+  label, input {
+    height: 50px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+.submitButton {
+  &Disabled {
+    pointer-events: none;
+    opacity: .5;
+  }
+}

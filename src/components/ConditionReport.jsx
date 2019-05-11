@@ -11,11 +11,13 @@ import "./styles/ConditionReport.scss";
 import { ReactComponent as Green } from '../assets/green.svg';
 import { ReactComponent as Yellow } from '../assets/yellow.svg';
 import { ReactComponent as Red } from '../assets/red.svg';
+import { ReactComponent as Unknown } from "../assets/empty.svg";
 
 const getImage = {
     "All Clear": <Green/>,
     "Minor Issues": <Yellow/>,
     "Bad / Closed": <Red />,
+    "Unknown": <Unknown/>,
 };
 
 const ConditionReport = props => {

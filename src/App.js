@@ -24,6 +24,8 @@ export default class App extends React.Component {
             sources: ['trailrun', 'mtb', 'hiking'],
             searchConditions: ['All Clear'],
             trailView: false,
+            sortBy: 'distance',
+            loading: false,
         }
     }
 
@@ -34,46 +36,51 @@ export default class App extends React.Component {
     };
 
     handleSubmit = () => {
-        Promise.all(
-            this.state.sources.map(source => {
-                return axios({
-                    method: 'get',
-                    url: `https://www.${source}project.com/data/get-trails`,
-                    params: {
-                        lat: this.state.location.lat,
-                        lon: this.state.location.lng,
-                        maxDistance: 100,
-                        maxResults: 500,
-                        key: "7024512-867f645d37de30f2bc0144d8dc5bc776",
+        this.setState({
+            loading: true,
+        }, () => {
+            Promise.all(
+                this.state.sources.map(source => {
+                    return axios({
+                        method: 'get',
+                        url: `https://www.${source}project.com/data/get-trails`,
+                        params: {
+                            lat: this.state.queryLocation.lat,
+                            lon: this.state.queryLocation.lng,
+                            maxDistance: 100,
+                            maxResults: 500,
+                            key: "7024512-867f645d37de30f2bc0144d8dc5bc776",
+                        }
+                    })
+                })
+            )
+                .then(response => {
+                    const sources = {
+                        trailrun: "trailrun",
+                        mtb: "mtb",
+                        hiking: "hiking",
+                    };
+
+                    let trails = [];
+                    for (let i = 0; i < response.length; i++) {
+                        trails = trails.concat(response[i].data.trails);
                     }
-                })
-            })
-        )
-            .then(response => {
-                const sources = {
-                    trailrun: "trailrun",
-                    mtb: "mtb",
-                    hiking: "hiking",
-                };
 
-                let trails = [];
-                for (let i = 0; i < response.length; i++) {
-                    trails = trails.concat(response[i].data.trails);
-                }
-
-                this.setState({
-                    trails: trails
-                        .filter(trail => this.state.searchConditions.includes(trail.conditionStatus))
-                        .map(trail => {
-                            for (let k in sources) {
-                                if (trail.url.includes(k)) {
-                                    trail.source = sources[k];
+                    this.setState({
+                        loading: false,
+                        trails: trails
+                            .filter(trail => this.state.searchConditions.includes(trail.conditionStatus))
+                            .map(trail => {
+                                for (let k in sources) {
+                                    if (trail.url.includes(k)) {
+                                        trail.source = sources[k];
+                                    }
                                 }
-                            }
-                            return trail;
-                        })
+                                return trail;
+                            })
+                    })
                 })
-            })
+        });
     };
 
     handleLatChange = e => {
@@ -174,18 +181,8 @@ export default class App extends React.Component {
                     handleSourcesChange={this.handleSourcesChange}
                     searchConditions={this.state.searchConditions}
                     handleConditionsChange={this.handleConditionsChange}
+                    loading={this.state.loading}
                 />
-
-                <p>NOTE: This app uses entirely data from <a href="www.trailrunproject.com" target={"_blank"}>Trail Run
-                    Project</a>, <a
-                    href="www.mtbproject.com" target={"_blank"}>MTB Project</a>, and <a href={"www.hikingproject.com"}
-                                                                                        target={"_blank"}>Hiking
-                    Project</a>.
-                    Because these sites do not directly allow for querying data by trail condition, this app functions
-                    by finding up to 500 trails which meet the search criteria and then filtering these trails by
-                    condition. If more than 500 trails meet the search criteria, not all matching trails will be
-                    returned!
-                </p>
                 <div className={'trailCardContainer'}>
                     {this.state.trails
                         .map((trail, index) => {

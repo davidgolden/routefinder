@@ -53,6 +53,9 @@ const TrailsMap = props => {
         maxZoom={18}
         className={'mapContainer'}
         onClick={props.handleClick}
+        bounds={props.trails.length > 0 ? props.trails.map(item => {
+            return [item.latitude, item.longitude]
+        }) : undefined}
     >
         <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
