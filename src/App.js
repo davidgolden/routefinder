@@ -47,7 +47,7 @@ export default class App extends React.Component {
                         params: {
                             lat: this.state.queryLocation.lat,
                             lon: this.state.queryLocation.lng,
-                            maxDistance: 100,
+                            maxDistance: this.state.maxDistance,
                             maxResults: 500,
                             key: "7024512-867f645d37de30f2bc0144d8dc5bc776",
                         }
