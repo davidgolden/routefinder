@@ -1,4 +1,29 @@
+@import "./components/styles/variables";
+
 .trailCardContainer {
   display: flex;
   flex-wrap: wrap;
+}
+
+.sortByContainer {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 1.2rem;
+
+  select, button {
+    font-size: 1.2rem;
+  }
+
+  button {
+    background-color: darken($theme_color, 30%);
+    margin-left: 10px;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 4px 10px;
+
+    &:hover {
+      background-color: darken($theme_color, 50%);
+    }
+  }
 }

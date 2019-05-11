@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import './App.scss';
-import TrailCard from "./components/TrailCard";
 import TrailsMap from "./components/Map";
 import SearchBar from "./components/SearchBar";
 import TrailView from "./components/TrailView";
+import TrailCardContainer from "./components/TrailCardContainer";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -19,12 +19,12 @@ export default class App extends React.Component {
                 lat: "39.400720",
                 lng: "-107.215337",
             },
-            maxDistance: 100,
+            maxDistance: 50,
             trails: [],
-            sources: ['trailrun', 'mtb', 'hiking'],
+            sources: ['trailrun'],
             searchConditions: ['All Clear'],
             trailView: false,
-            sortBy: 'distance',
+            sortBy: '',
             loading: false,
         }
     }
@@ -154,15 +154,35 @@ export default class App extends React.Component {
         })
     };
 
-    // imgMedium: "https://cdn-files.apstatic.com/hike/7000658_medium_1554159500.jpg"
-    // imgSmall: "https://cdn-files.apstatic.com/hike/7000658_small_1554159500.jpg"
-    // imgSmallMed: "https://cdn-files.apstatic.com/hike/7000658_smallMed_1554159500.jpg"
-    // imgSqSmall: "https://cdn-files.apstatic.com/hike/7000658_sqsmall_1554159500.jpg"
+    handleSortBy = () => {
+        if (this.state.sortBy) {
+            this.setState(() => {
+                const sortedTrails = this.state.trails.sort((a, b) => {
+                    if (this.state.sortBy === 'distance_asc') {
+                        return a.length - b.length;
+                    } else if (this.state.sortBy === 'distance_desc') {
+                        return b.length - a.length;
+                    } else {
+                        return b.stars - a.stars;
+                    }
+                });
+                return {
+                    trails: sortedTrails,
+                }
+            })
+        }
+    };
+
+    handleSortByChange = e => {
+        this.setState({
+            sortBy: e.target.value,
+        })
+    };
 
     render() {
         return (
             <div>
-                {this.state.trailView && <TrailView trail={this.state.trailView} setTrailView={this.setTrailView} />}
+                {this.state.trailView && <TrailView trail={this.state.trailView} setTrailView={this.setTrailView}/>}
 
                 <TrailsMap mapLocation={[this.state.mapLocation.lat, this.state.mapLocation.lng]}
                            queryLocation={[this.state.queryLocation.lat, this.state.queryLocation.lng]}
@@ -183,12 +203,16 @@ export default class App extends React.Component {
                     handleConditionsChange={this.handleConditionsChange}
                     loading={this.state.loading}
                 />
-                <div className={'trailCardContainer'}>
-                    {this.state.trails
-                        .map((trail, index) => {
-                            return <TrailCard key={index} trail={trail} setTrailView={this.setTrailView}/>
-                        })}
-                </div>
+                {this.state.trails.length > 0 && <div className={'sortByContainer'}>
+                    Sort by <select value={this.state.sortBy} onChange={this.handleSortByChange}>
+                    <option value={""}> </option>
+                    <option value={'distance_asc'}>Distance (Asc)</option>
+                    <option value={'distance_desc'}>Distance (Desc)</option>
+                    <option value={'rating'}>Rating</option>
+                </select>
+                    <button onClick={this.handleSortBy}>Go</button>
+                </div>}
+                <TrailCardContainer trails={this.state.trails} setTrailView={this.setTrailView}/>
             </div>
         )
     }
