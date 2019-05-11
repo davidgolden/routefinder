@@ -6,6 +6,8 @@ import SearchBar from "./components/SearchBar";
 import TrailView from "./components/TrailView";
 import TrailCardContainer from "./components/TrailCardContainer";
 
+const sources = ['trailrun', 'mtb', 'hiking'];
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +22,7 @@ export default class App extends React.Component {
                 lng: "-107.215337",
             },
             maxDistance: 50,
-            trails: [],
+            trails: new Map(),
             sources: ['trailrun'],
             searchConditions: ['All Clear'],
             trailView: false,
@@ -54,30 +56,25 @@ export default class App extends React.Component {
                     })
                 })
             )
-                .then(response => {
-                    const sources = {
-                        trailrun: "trailrun",
-                        mtb: "mtb",
-                        hiking: "hiking",
-                    };
-
-                    let trails = [];
-                    for (let i = 0; i < response.length; i++) {
-                        trails = trails.concat(response[i].data.trails);
-                    }
+                .then(responses => {
+                    let trails = new Map();
+                    responses.forEach(response => {
+                        response.data.trails.forEach(trail => {
+                            if (this.state.searchConditions.includes(trail.conditionStatus)) {
+                                let source = '';
+                                sources.forEach(s => {
+                                    if (trail.url.includes(s)) {
+                                        source = s;
+                                    }
+                                });
+                                trails.set(trail.id, {...trail, source: source});
+                            }
+                        })
+                    });
 
                     this.setState({
                         loading: false,
-                        trails: trails
-                            .filter(trail => this.state.searchConditions.includes(trail.conditionStatus))
-                            .map(trail => {
-                                for (let k in sources) {
-                                    if (trail.url.includes(k)) {
-                                        trail.source = sources[k];
-                                    }
-                                }
-                                return trail;
-                            })
+                        trails: trails,
                     })
                 })
         });
@@ -157,7 +154,8 @@ export default class App extends React.Component {
     handleSortBy = () => {
         if (this.state.sortBy) {
             this.setState(() => {
-                const sortedTrails = this.state.trails.sort((a, b) => {
+                const newTrails = new Map();
+                const sortedTrails = Array.from(this.state.trails.values()).sort((a, b) => {
                     if (this.state.sortBy === 'distance_asc') {
                         return a.length - b.length;
                     } else if (this.state.sortBy === 'distance_desc') {
@@ -166,8 +164,17 @@ export default class App extends React.Component {
                         return b.stars - a.stars;
                     }
                 });
+                sortedTrails.forEach(trail => {
+                    let source = '';
+                    sources.forEach(s => {
+                        if (trail.url.includes(s)) {
+                            source = s;
+                        }
+                    });
+                    newTrails.set(trail.id, {...trail, source: source});
+                });
                 return {
-                    trails: sortedTrails,
+                    trails: newTrails,
                 }
             })
         }
@@ -180,6 +187,8 @@ export default class App extends React.Component {
     };
 
     render() {
+        const trailsArray = Array.from(this.state.trails.values());
+
         return (
             <div>
                 {this.state.trailView && <TrailView trail={this.state.trailView} setTrailView={this.setTrailView}/>}
@@ -187,7 +196,7 @@ export default class App extends React.Component {
                 <TrailsMap mapLocation={[this.state.mapLocation.lat, this.state.mapLocation.lng]}
                            queryLocation={[this.state.queryLocation.lat, this.state.queryLocation.lng]}
                            handleClick={this.handleMapClick}
-                           trails={this.state.trails}
+                           trails={trailsArray}
                            setTrailView={this.setTrailView}
                 />
                 <SearchBar
@@ -203,7 +212,7 @@ export default class App extends React.Component {
                     handleConditionsChange={this.handleConditionsChange}
                     loading={this.state.loading}
                 />
-                {this.state.trails.length > 0 && <div className={'sortByContainer'}>
+                {this.state.trails.size > 0 && <div className={'sortByContainer'}>
                     Sort by <select value={this.state.sortBy} onChange={this.handleSortByChange}>
                     <option value={""}> </option>
                     <option value={'distance_asc'}>Distance (Asc)</option>
@@ -212,7 +221,7 @@ export default class App extends React.Component {
                 </select>
                     <button onClick={this.handleSortBy}>Go</button>
                 </div>}
-                <TrailCardContainer trails={this.state.trails} setTrailView={this.setTrailView}/>
+                <TrailCardContainer trails={trailsArray} setTrailView={this.setTrailView}/>
             </div>
         )
     }
