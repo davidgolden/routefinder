@@ -1,27 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import "./styles/ConditionReport.scss";
-
-// conditionColor: "Green"
-// conditionDate: "2019-04-23 14:03:02"
-// conditionDetails: "Dry"
-// conditionImg: "https://cdn.apstatic.com/img/conditions/green.svg"
-// conditionStatus: "All Clear"
-
-import { ReactComponent as Green } from '../assets/green.svg';
-import { ReactComponent as Yellow } from '../assets/yellow.svg';
-import { ReactComponent as Red } from '../assets/red.svg';
-import { ReactComponent as Unknown } from "../assets/empty.svg";
-
-const getImage = {
-    "All Clear": <Green/>,
-    "Minor Issues": <Yellow/>,
-    "Bad / Closed": <Red />,
-    "Unknown": <Unknown/>,
-};
+import {getCondition} from "./utils";
 
 const ConditionReport = props => {
-    const ConditionIcon = () => getImage[props.conditionStatus];
+    const ConditionIcon = () => getCondition[props.conditionStatus];
 
     return (
         <div className={'conditionReport'}>

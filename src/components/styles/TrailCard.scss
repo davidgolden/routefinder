@@ -1,3 +1,5 @@
+@import "./variables";
+
 .trailCard {
   flex: 1 1 20%;
   border: 2px solid forestgreen;
@@ -6,6 +8,10 @@
   width: 200px;
   padding: 10px;
   cursor: pointer;
+
+  p {
+    line-height: 30px;
+  }
 
   > img {
     width: 100%;
@@ -25,6 +31,15 @@
       margin-right: 5px;
       display: inline;
       vertical-align: top;
+    }
+  }
+
+  a {
+    color: darken($theme_color, 50%);
+    text-decoration: none;
+
+    &:hover {
+      color: darken($theme_color, 70%);
     }
   }
 }

@@ -3,27 +3,7 @@ import "./styles/TrailCard.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown} from "@fortawesome/free-solid-svg-icons";
 import moment from 'moment';
-
-import { ReactComponent as TrailRunnerIcon } from '../assets/trailrunicon.svg';
-import { ReactComponent as MTBIcon } from '../assets/mtbicon.svg';
-import { ReactComponent as HikingIcon } from '../assets/hikingicon.svg';
-import { ReactComponent as Green } from '../assets/green.svg';
-import { ReactComponent as Yellow } from '../assets/yellow.svg';
-import { ReactComponent as Red } from '../assets/red.svg';
-import { ReactComponent as Unknown } from "../assets/empty.svg";
-
-const getIcon = {
-    "trailrun": <TrailRunnerIcon/>,
-    "mtb": <MTBIcon />,
-    "hiking": <HikingIcon />,
-};
-
-const getCondition = {
-    'All Clear': <Green />,
-    'Minor Issues': <Yellow />,
-    'Bad / Closed': <Red />,
-    'Unknown': <Unknown/>,
-};
+import {getCondition, getIcon, getWebsite} from "./utils";
 
 const TrailCard = props => {
 
@@ -43,10 +23,10 @@ const TrailCard = props => {
                 <FontAwesomeIcon icon={faLongArrowAltDown}/> {props.trail.descent}' down to {props.trail.low}'
             </p>
             <p>
-                <ConditionIcon /> - {props.trail.conditionStatus} -
+                <ConditionIcon /> {props.trail.conditionStatus} -
                 {moment(props.trail.conditionDate, 'YYYY-MM-DD HH:mm:ss').format('MMM D, YYYY')}
             </p>
-            <a href={props.trail.url} target={"_blank"}>See Trail</a>
+            <a href={props.trail.url} target={"_blank"}>See Trail on {getWebsite[props.trail.source]}</a>
         </div>
     </div>
 };

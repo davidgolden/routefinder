@@ -1,8 +1,8 @@
-$color: #bad6be;
+@import "./variables";
 
 .searchBarContainer {
   font-size: 1.2rem;
-  background-color: $color;
+  background-color: $theme_color;
   text-align: center;
   padding-bottom: 10px;
 
@@ -21,7 +21,7 @@ $color: #bad6be;
   input {
     font-size: 1.2rem;
     padding: 5px 10px;
-    background-color: lighten($color, 10%);
+    background-color: lighten($theme_color, 10%);
     border: none;
   }
 
@@ -30,7 +30,7 @@ $color: #bad6be;
   }
 
   button {
-    background-color: darken($color, 30%);
+    background-color: darken($theme_color, 30%);
     color: white;
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -38,7 +38,7 @@ $color: #bad6be;
     cursor: pointer;
 
     &:hover {
-      background-color: darken($color, 50%)
+      background-color: darken($theme_color, 50%)
     }
   }
 }

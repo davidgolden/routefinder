@@ -5,6 +5,7 @@ import './styles/Map.scss';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 // require('react-leaflet-markercluster/dist/styles.min.css'); // inside .js file
 import MapIcon from '../assets/map-icon.png';
+import PropTypes from 'prop-types';
 
 const pointerIcon = new L.Icon({
     iconUrl: MapIcon,
@@ -53,7 +54,7 @@ const TrailsMap = props => {
         maxZoom={18}
         className={'mapContainer'}
         onClick={props.handleClick}
-        bounds={props.trails.length > 0 ? props.trails.map(item => {
+        bounds={props.trails && props.trails.length > 0 ? props.trails.map(item => {
             return [item.latitude, item.longitude]
         }) : undefined}
     >
@@ -61,13 +62,20 @@ const TrailsMap = props => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker icon={pointerIcon} position={props.queryLocation} />
+        <Marker icon={pointerIcon} position={props.queryLocation}/>
         <MarkerClusterGroup>
-            {props.trails.map((item, index) => {
-                return <Marker key={index} icon={getIcon[item.source]} position={[item.latitude, item.longitude]} onClick={() => props.setTrailView(item)} />
+            {props.trails && props.trails.length > 0 && props.trails.map((item, index) => {
+                return <Marker key={index} icon={getIcon[item.source]} position={[item.latitude, item.longitude]}
+                               onClick={() => props.setTrailView(item)}/>
             })}
         </MarkerClusterGroup>
     </Map>
+};
+
+TrailsMap.propTypes = {
+    mapLocation: PropTypes.array.isRequired,
+    queryLocation: PropTypes.array.isRequired,
+    trails: PropTypes.array,
 };
 
 export default TrailsMap;

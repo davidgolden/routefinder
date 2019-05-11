@@ -3,22 +3,14 @@ import "./styles/TrailView.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLongArrowAltUp, faLongArrowAltDown, faStar} from "@fortawesome/free-solid-svg-icons";
 import ConditionReport from "./ConditionReport";
-
-import {ReactComponent as TrailRunnerIcon} from '../assets/trailrunicon.svg';
-import {ReactComponent as MTBIcon} from '../assets/mtbicon.svg';
-import {ReactComponent as HikingIcon} from '../assets/hikingicon.svg';
+import {getIcon, getWebsite} from "./utils";
+import TrailsMap from "./Map";
 
 export default class TrailView extends React.Component {
     constructor(props) {
         super(props);
 
         this.trailViewRef = React.createRef();
-
-        this.getIcon = {
-            "trailrun": <TrailRunnerIcon/>,
-            "mtb": <MTBIcon/>,
-            "hiking": <HikingIcon/>,
-        };
     }
 
     handleClick = e => {
@@ -28,7 +20,7 @@ export default class TrailView extends React.Component {
     };
 
     render() {
-        const SourceIcon = () => this.getIcon[this.props.trail.source];
+        const SourceIcon = () => getIcon[this.props.trail.source];
 
         return (
             <div className={'background'} onClick={this.handleClick}>
@@ -54,7 +46,8 @@ export default class TrailView extends React.Component {
                                 {this.props.trail.stars} <FontAwesomeIcon
                                 icon={faStar}/> of {this.props.trail.starVotes} reviews
                             </p>
-                            <a href={this.props.trail.url} target={"_blank"}>See Trail</a>
+                            <a href={this.props.trail.url} target={"_blank"}>See Trail
+                                on {getWebsite[this.props.trail.source]}</a>
                         </div>
                         <div>
                             <h4>Latest Trail Report</h4>
@@ -64,6 +57,11 @@ export default class TrailView extends React.Component {
                                 conditionDetails={this.props.trail.conditionDetails}
                             />
                         </div>
+
+                        <TrailsMap
+                            queryLocation={[this.props.trail.latitude, this.props.trail.longitude]}
+                            mapLocation={[this.props.trail.latitude, this.props.trail.longitude]}
+                        />
                     </div>
                 </div>
             </div>
